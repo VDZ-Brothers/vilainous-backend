@@ -3,12 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use Error;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
-
-use function Laravel\Prompts\error;
 
 class UserController
 {
@@ -26,7 +23,7 @@ class UserController
         $user = User::create([
             'name' => $request["username"],
             'email' => $request["email"],
-            'password' => $request["password"],
+            'password' => Hash::make($request["password"]),
         ]);
         Log::info($user);
 
@@ -35,7 +32,21 @@ class UserController
 
     public function login(Request $request)
     {
-        Log::info("Hello Login");
+        Log::info("Hello 1");
         Log::info($request->all());
+        $request->validate([
+            "email"=>"required|email",
+            "password"=>"required"
+        ]);
+        Log::info("Hello 2");
+
+        Log::info($request["email"]);
+        $user = User::where('email', $request["email"])->first();
+        Log::info($user);
+        if($user && Hash::check($request["password"], $user->password)){
+            return response()->json("OK", 200);
+        }else{
+            return response()->json("Unauthorized", 401);
+        }
     }
 }
