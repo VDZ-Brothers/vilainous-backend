@@ -29,24 +29,4 @@ class UserController
 
         return response()->json($user, 201);
     }
-
-    public function login(Request $request)
-    {
-        Log::info("Hello 1");
-        Log::info($request->all());
-        $request->validate([
-            "email"=>"required|email",
-            "password"=>"required"
-        ]);
-        Log::info("Hello 2");
-
-        Log::info($request["email"]);
-        $user = User::where('email', $request["email"])->first();
-        Log::info($user);
-        if($user && Hash::check($request["password"], $user->password)){
-            return response()->json("OK", 200);
-        }else{
-            return response()->json("Unauthorized", 401);
-        }
-    }
 }
