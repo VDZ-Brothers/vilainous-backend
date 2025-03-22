@@ -1,6 +1,5 @@
 <?php
-
-use App\Http\Middleware\CorsMiddleware;
+use Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful;
 use Illuminate\Http\Middleware\HandleCors;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -14,6 +13,7 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->append(HandleCors::class);
+        $middleware->append(EnsureFrontendRequestsAreStateful::class);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
