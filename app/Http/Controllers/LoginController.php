@@ -9,26 +9,26 @@ use App\Models\User;
 
 class LoginController
 {
-    public function authenticate(Request $request){
+    public function authenticate(Request $request)
+    {
         return response()->json([
-            'message' => "Valid Token, Redirecting...",
+            'message' => "Valid Token",
             'user' => Auth::user()
         ], 200);
     }
     public function login(Request $request)
     {
         $request->validate([
-            "email"=>"required|email",
-            "password"=>"required"
+            "email" => "required|email",
+            "password" => "required"
         ]);
 
         $user = User::where('email', $request["email"])->first();
 
-        if($user && Hash::check($request["password"], $user->password)){
+        if ($user && Hash::check($request["password"], $user->password)) {
             $token = $user->createToken('authToken')->plainTextToken;
             return response()->json($token, 200);
-        }else{
-            return response()->json("Unauthorized", 401);
         }
+        return response()->json("Unauthorized", 401);
     }
 }
