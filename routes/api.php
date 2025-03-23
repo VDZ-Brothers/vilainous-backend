@@ -18,3 +18,4 @@ Route::get('/', function () {
 Route::post('/login', [LoginController::class, 'login']);
 
 Route::middleware('auth:sanctum')->get("/authenticate", [LoginController::class, "authenticate"]);
+Route::middleware('auth:sanctum')->post("/logout", [LoginController::class, "logout"]);
