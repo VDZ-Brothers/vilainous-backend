@@ -34,11 +34,6 @@ class LoginController
 
     public function logout(Request $request)
     {
-        if(!$request->user()){
-            return response()->json([
-                'message' => "No User found",
-            ], 404);
-        }
         $request->user()->currentAccessToken()->delete();
         return response()->json([
             'message' => 'Déconnexion réussie'
