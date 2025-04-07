@@ -13,4 +13,7 @@ class User extends Model
     protected $fillable = [
         'name', 'email', 'password',
     ];
+    public function game(){
+        return $this->belongsTo(HostedGame::class);
+    }
 }
