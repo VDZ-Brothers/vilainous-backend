@@ -14,6 +14,6 @@ class User extends Model
         'name', 'email', 'password',
     ];
     public function game(){
-        return $this->belongsTo(HostedGame::class);
+        return $this->belongsTo(HostedGame::class, 'game_id');
     }
 }

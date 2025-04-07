@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use App\Models\User;
 
 class LoginController
@@ -17,6 +18,7 @@ class LoginController
     }
     public function login(Request $request)
     {
+        Log::info("Login with $request");
         $request->validate([
             "email"=>"required|email",
             "password"=>"required"
@@ -26,9 +28,17 @@ class LoginController
 
         if($user && Hash::check($request["password"], $user->password)){
             $token = $user->createToken('authToken')->plainTextToken;
-            return response()->json($token, 200);
-        }else{
-            return response()->json("Unauthorized", 401);
+            return response()->json([
+                "token" => $token,
+                "email" => $request["email"]
+            ], 200);
         }
+        return response()->json("Unauthorized", 401);
+    }
+    public function logout(Request $request){
+        $request->user()->tokens()->delete();
+        return response()->json([
+            "message" => "Logged out from all devices"
+        ], 200);
     }
 }

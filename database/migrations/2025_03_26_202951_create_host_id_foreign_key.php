@@ -11,20 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
-            $table->id()->primary();
-            $table->string('name')->unique();
-            $table->string('email')->unique();
-            $table->string('password');
+        Schema::table('hosted_games', function (Blueprint $table) {
+            $table->foreign('host_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
-
 
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists("users");
+        Schema::table('hosted_games', function (Blueprint $table) {
+            //
+        });
     }
 };
