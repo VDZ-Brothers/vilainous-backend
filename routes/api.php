@@ -16,5 +16,7 @@ Route::post('/logout', [LoginController::class, 'logout'])->middleware('auth:san
 
 Route::post('/createHostGame', [HostingController::class, 'store']);
 
+Route::post('/joinHostGame', [HostingController::class, 'join']);
+
 Route::middleware('auth:sanctum')->get("/authenticate", [LoginController::class, "authenticate"]);
 
